@@ -7,7 +7,13 @@
   <body>
     <cast-media-player></cast-media-player>
     <script>
-      cast.framework.CastReceiverContext.getInstance().start();
+      const context = cast.framework.CastReceiverContext.getInstance()
+      const playbackConfig = new cast.framework.PlaybackConfig();
+      playbackConfig.manifestRequestHandler = requestInfo => {
+        console.log('=== requestInfo ===: ', requestInfo)
+        requestInfo.withCredentials = true;
+      };
+      context.start({ playbackConfig: playbackConfig })
     </script>
   </body>
 </html>
