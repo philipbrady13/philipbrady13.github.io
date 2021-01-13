@@ -12,6 +12,7 @@
       playbackConfig.manifestRequestHandler = requestInfo => {
         console.log('=== requestInfo ===: ', requestInfo)
         requestInfo.withCredentials = true;
+        return requestInfo
       };
       context.start({ playbackConfig: playbackConfig })
     </script>
