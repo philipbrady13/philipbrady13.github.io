@@ -1,3 +1,5 @@
+// https://codelabs.developers.google.com/codelabs/cast-receiver#1
+
 const context = cast.framework.CastReceiverContext.getInstance();
 const playerManager = context.getPlayerManager();
 
