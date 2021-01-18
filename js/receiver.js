@@ -90,17 +90,18 @@ playerManager.setMessageInterceptor(
             reject();
           } else {
             // Adjusting request to make requested content playable
-            request.media.contentType = TEST_STREAM_TYPE;
+            // request.media.contentType = TEST_STREAM_TYPE;
+            request.media.contentType = request.media.contentType;
 
             // Configure player to parse DASH content
-            if(TEST_STREAM_TYPE == StreamType.DASH) {
-              console.log('TEST_STREAM_TYPE == StreamType.DASH')
+            if(request.media.contentType == StreamType.DASH) {
+              console.log('request.media.contentType == StreamType.DASH')
               request.media.contentUrl = item.stream.dash;
             }
 
             // Configure player to parse HLS content
-            else if(TEST_STREAM_TYPE == StreamType.HLS) {
-              console.log('TEST_STREAM_TYPE == StreamType.HLS')
+            else if(request.media.contentType == StreamType.HLS) {
+              console.log('request.media.contentType == StreamType.HLS')
               request.media.contentUrl = item.stream.hls
               request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.FMP4;
               request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.FMP4;
