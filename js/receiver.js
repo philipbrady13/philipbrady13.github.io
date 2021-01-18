@@ -75,11 +75,13 @@ playerManager.setMessageInterceptor(
 
     return new Promise((resolve, reject) => {
       // Fetch repository metadata
-      makeRequest('GET', SAMPLE_URL)
+      makeRequest('GET', request.media.contentId)
         .then(function (data) {
-          castDebugLogger.warn('PHIL::', request.media.contentId, request.media, data);
+          castDebugLogger.warn('PHIL::', request.media, data);
           // Obtain resources by contentId from downloaded repository metadata.
-          let item = data[request.media.contentId];
+          // let item = data[request.media.contentId];
+          let item = data;
+
           if(!item) {
             // Content could not be found in repository
             castDebugLogger.error(LOG_TAG, 'Content not found');
