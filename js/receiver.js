@@ -75,6 +75,8 @@ playerManager.setMessageInterceptor(
 
     return new Promise((resolve, reject) => {
       // Fetch repository metadata
+      castDebugLogger.info(LOG_TAG, 'making GET request to ', request.media.contentId);
+
       makeRequest('GET', request.media.contentId)
         .then(function (data) {
           castDebugLogger.warn('PHIL::', request.media, data);
