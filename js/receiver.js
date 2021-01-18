@@ -41,7 +41,7 @@ castDebugLogger.loggerLevelByTags = {
 
 function makeRequest (method, url) {
   return new Promise(function (resolve, reject) {
-    castDebugLogger.warn('makeRequest', method, url, this.status);
+    castDebugLogger.warn('makeRequest', method, url);
     let xhr = new XMLHttpRequest();
     xhr.open(method, url, true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -72,7 +72,7 @@ playerManager.addEventListener(
     // Write your own event handling code, for example
     // using the event.mediaStatus value
 
-    castDebugLogger.info(LOG_TAG, 'cast.framework.events.EventType.MEDIA_STATUS', event);
+    // castDebugLogger.info(LOG_TAG, 'cast.framework.events.EventType.MEDIA_STATUS', event);
   }
 );
 
@@ -92,7 +92,7 @@ playerManager.setMessageInterceptor(
 
       makeRequest('GET', request.media.contentId)
         .then(function (data) {
-          castDebugLogger.warn('PHIL::', request.media, data);
+          // castDebugLogger.warn('PHIL::', request.media, data);
           // Obtain resources by contentId from downloaded repository metadata.
           // let item = data[request.media.contentId];
           let item = data;
