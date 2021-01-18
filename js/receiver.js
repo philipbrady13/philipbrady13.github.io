@@ -43,9 +43,9 @@ function makeRequest (method, url) {
   return new Promise(function (resolve, reject) {
     castDebugLogger.warn('makeRequest', method, url);
     let xhr = new XMLHttpRequest();
-    xhr.open(method, url, true);
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.open(method, url);
     xhr.onload = function () {
+      castDebugLogger.warn('makeRequest onload', this.status);
       if (this.status >= 200 && this.status < 300) {
         resolve(JSON.parse(xhr.response));
       } else {
