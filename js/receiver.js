@@ -84,7 +84,7 @@ playerManager.setMessageInterceptor(
 
       makeRequest('GET', request.media.contentId)
         .then(function (data) {
-          // castDebugLogger.warn('PHIL::', request.media, data);
+          castDebugLogger.warn('PHIL::', request.media, data);
           // Obtain resources by contentId from downloaded repository metadata.
           // let item = data[request.media.contentId];
           let item = data;
