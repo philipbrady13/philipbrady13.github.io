@@ -66,7 +66,7 @@ function makeRequest (method, url) {
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   request => {
-    // castDebugLogger.info(LOG_TAG, 'Intercepting LOAD request');
+    castDebugLogger.info(LOG_TAG, 'Intercepting LOAD request');
 
     // Map contentId to entity
     if (request.media && request.media.entity) {
@@ -81,7 +81,7 @@ playerManager.setMessageInterceptor(
           let item = data[request.media.contentId];
           if(!item) {
             // Content could not be found in repository
-            // castDebugLogger.error(LOG_TAG, 'Content not found');
+            castDebugLogger.error(LOG_TAG, 'Content not found');
             reject();
           } else {
             // Adjusting request to make requested content playable
@@ -89,17 +89,19 @@ playerManager.setMessageInterceptor(
 
             // Configure player to parse DASH content
             if(TEST_STREAM_TYPE == StreamType.DASH) {
+              console.log('TEST_STREAM_TYPE == StreamType.DASH')
               request.media.contentUrl = item.stream.dash;
             }
 
             // Configure player to parse HLS content
             else if(TEST_STREAM_TYPE == StreamType.HLS) {
+              console.log('TEST_STREAM_TYPE == StreamType.HLS')
               request.media.contentUrl = item.stream.hls
               request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.FMP4;
               request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.FMP4;
             }
 
-            // castDebugLogger.warn(LOG_TAG, 'Playable URL:', request.media.contentUrl);
+            castDebugLogger.warn(LOG_TAG, 'Playable URL:', request.media.contentUrl);
 
             // Add metadata
             let metadata = new cast.framework.messages.GenericMediaMetadata();
