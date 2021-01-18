@@ -44,6 +44,7 @@ function makeRequest (method, url) {
     let xhr = new XMLHttpRequest();
     xhr.open(method, url);
     xhr.onload = function () {
+      castDebugLogger.info('makeRequest', method, url, this.status);
       if (this.status >= 200 && this.status < 300) {
         resolve(JSON.parse(xhr.response));
       } else {
@@ -53,7 +54,8 @@ function makeRequest (method, url) {
         });
       }
     };
-    xhr.onerror = function () {
+    xhr.onerror = function (err) {
+      castDebugLogger.error('xhr.onerror', err);
       reject({
         status: this.status,
         statusText: xhr.statusText
