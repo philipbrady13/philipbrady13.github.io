@@ -103,7 +103,7 @@ playerManager.setMessageInterceptor(
             reject();
           } else {
             // Adjusting request to make requested content playable
-            // request.media.contentType = TEST_STREAM_TYPE;
+            request.media.contentType = TEST_STREAM_TYPE;
             request.media.contentType = request.media.contentType;
 
             // Configure player to parse DASH content
