@@ -77,6 +77,7 @@ playerManager.setMessageInterceptor(
       // Fetch repository metadata
       makeRequest('GET', SAMPLE_URL)
         .then(function (data) {
+          castDebugLogger.log('PHIL::', data)
           // Obtain resources by contentId from downloaded repository metadata.
           let item = data[request.media.contentId];
           if(!item) {
