@@ -42,9 +42,10 @@ castDebugLogger.loggerLevelByTags = {
 function makeRequest (method, url) {
   return new Promise(function (resolve, reject) {
     let xhr = new XMLHttpRequest();
-    xhr.open(method, url);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+    xhr.open(method, url, true);
     xhr.onload = function () {
-      castDebugLogger.info('makeRequest', method, url, this.status);
+      castDebugLogger.warn('makeRequest', method, url, this.status);
       if (this.status >= 200 && this.status < 300) {
         resolve(JSON.parse(xhr.response));
       } else {
