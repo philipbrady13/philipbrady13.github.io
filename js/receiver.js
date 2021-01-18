@@ -66,6 +66,16 @@ function makeRequest (method, url) {
   });
 }
 
+playerManager.addEventListener(
+  cast.framework.events.EventType.MEDIA_STATUS,
+  (event) => {
+    // Write your own event handling code, for example
+    // using the event.mediaStatus value
+
+    castDebugLogger.info(LOG_TAG, 'cast.framework.events.EventType.MEDIA_STATUS', event);
+  }
+);
+
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   request => {
@@ -174,4 +184,10 @@ playerDataBinder.addEventListener(
     );
   });
 
-context.start();
+
+const playbackConfig = new cast.framework.PlaybackConfig();
+playbackConfig.manifestRequestHandler = requestInfo => {
+  requestInfo.withCredentials = true;
+}
+
+context.start({playbackConfig: playbackConfig});
