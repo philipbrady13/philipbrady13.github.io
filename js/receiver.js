@@ -41,40 +41,32 @@ castDebugLogger.loggerLevelByTags = {
 
 function makeRequest (method, url) {
   return new Promise(function (resolve, reject) {
-    castDebugLogger.warn('makeRequest', method, url);
+    // castDebugLogger.warn('makeRequest', method, url);
     let xhr = new XMLHttpRequest();
     xhr.open(method, url);
     xhr.onload = function () {
-      castDebugLogger.warn('makeRequest onload', this.status);
+      // castDebugLogger.warn('makeRequest onload', this.status);
       if (this.status >= 200 && this.status < 300) {
         resolve(JSON.parse(xhr.response));
       } else {
         reject({
           status: this.status,
-          statusText: xhr.statusText
+          statusText: xhr.statusText,
+          when: 'onload'
         });
       }
     };
     xhr.onerror = function (err) {
-      castDebugLogger.error('xhr.onerror', err);
+      // castDebugLogger.error('xhr.onerror', err);
       reject({
         status: this.status,
-        statusText: xhr.statusText
+        statusText: xhr.statusText,
+        when: 'onerror'
       });
     };
     xhr.send();
   });
 }
-
-playerManager.addEventListener(
-  cast.framework.events.EventType.MEDIA_STATUS,
-  (event) => {
-    // Write your own event handling code, for example
-    // using the event.mediaStatus value
-
-    // castDebugLogger.info(LOG_TAG, 'cast.framework.events.EventType.MEDIA_STATUS', event);
-  }
-);
 
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
@@ -139,50 +131,50 @@ playerManager.setMessageInterceptor(
   });
 
 // Optimizing for smart displays
-const touchControls = cast.framework.ui.Controls.getInstance();
-const playerData = new cast.framework.ui.PlayerData();
-const playerDataBinder = new cast.framework.ui.PlayerDataBinder(playerData);
+// const touchControls = cast.framework.ui.Controls.getInstance();
+// const playerData = new cast.framework.ui.PlayerData();
+// const playerDataBinder = new cast.framework.ui.PlayerDataBinder(playerData);
 
-let browseItems = getBrowseItems();
+// let browseItems = getBrowseItems();
 
-function getBrowseItems() {
-  let browseItems = [];
-  makeRequest('GET', SAMPLE_URL)
-  .then(function (data) {
-    for (let key in data) {
-      let item = new cast.framework.ui.BrowseItem();
-      item.entity = key;
-      item.title = data[key].title;
-      item.subtitle = data[key].description;
-      item.image = new cast.framework.messages.Image(data[key].poster);
-      item.imageType = cast.framework.ui.BrowseImageType.MOVIE;
-      browseItems.push(item);
-    }
-  });
-  return browseItems;
-}
+// function getBrowseItems() {
+//   let browseItems = [];
+//   makeRequest('GET', SAMPLE_URL)
+//   .then(function (data) {
+//     for (let key in data) {
+//       let item = new cast.framework.ui.BrowseItem();
+//       item.entity = key;
+//       item.title = data[key].title;
+//       item.subtitle = data[key].description;
+//       item.image = new cast.framework.messages.Image(data[key].poster);
+//       item.imageType = cast.framework.ui.BrowseImageType.MOVIE;
+//       browseItems.push(item);
+//     }
+//   });
+//   return browseItems;
+// }
 
-let browseContent = new cast.framework.ui.BrowseContent();
-browseContent.title = 'Up Next';
-browseContent.items = browseItems;
-browseContent.targetAspectRatio =
-  cast.framework.ui.BrowseImageAspectRatio.LANDSCAPE_16_TO_9;
+// let browseContent = new cast.framework.ui.BrowseContent();
+// browseContent.title = 'Up Next';
+// browseContent.items = browseItems;
+// browseContent.targetAspectRatio =
+//   cast.framework.ui.BrowseImageAspectRatio.LANDSCAPE_16_TO_9;
 
-playerDataBinder.addEventListener(
-  cast.framework.ui.PlayerDataEventType.MEDIA_CHANGED,
-  (e) => {
-    if (!e.value) return;
+// playerDataBinder.addEventListener(
+//   cast.framework.ui.PlayerDataEventType.MEDIA_CHANGED,
+//   (e) => {
+//     if (!e.value) return;
 
-    // Media browse
-    touchControls.setBrowseContent(browseContent);
+//     // Media browse
+//     touchControls.setBrowseContent(browseContent);
 
-    // Clear default buttons and re-assign
-    touchControls.clearDefaultSlotAssignments();
-    touchControls.assignButton(
-      cast.framework.ui.ControlsSlot.SLOT_PRIMARY_1,
-      cast.framework.ui.ControlsButton.SEEK_BACKWARD_30
-    );
-  });
+//     // Clear default buttons and re-assign
+//     touchControls.clearDefaultSlotAssignments();
+//     touchControls.assignButton(
+//       cast.framework.ui.ControlsSlot.SLOT_PRIMARY_1,
+//       cast.framework.ui.ControlsButton.SEEK_BACKWARD_30
+//     );
+//   });
 
 
 const playbackConfig = new cast.framework.PlaybackConfig();
