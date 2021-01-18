@@ -119,6 +119,8 @@ playerManager.setMessageInterceptor(
             // Resolve request
             resolve(request);
           }
+      }).catch(function (err) {
+        castDebugLogger.error(LOG_TAG, 'CATCH ERROR ON MAKEREQUEST', err);
       });
     });
   });
