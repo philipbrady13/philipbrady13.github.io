@@ -67,9 +67,10 @@ playerManager.setMessageInterceptor(
       }
 
       // Fetch content repository by requested contentId
-      makeRequest('GET', 'https://tse-summit.firebaseio.com/content.json?orderBy=%22$key%22&equalTo=%22'+ request.media.contentId + '%22')
+      makeRequest('GET', request.media.contentId)
         .then(function (data) {
-          var item = data[request.media.contentId];
+          // var item = data[request.media.contentId];
+          var item = request.media.contentId;
           if(!item) {
             // Content could not be found in repository
             castDebugLogger.error('MyAPP.LOG', 'Content not found');
@@ -77,7 +78,7 @@ playerManager.setMessageInterceptor(
           } else {
             // Adjusting request to make requested content playable
             request.media.contentId = item.stream.hls;
-            request.media.contentType = 'application/x-mpegurl';
+            // request.media.contentType = 'application/x-mpegurl';
             castDebugLogger.warn('MyAPP.LOG', 'Playable URL:', request.media.contentId);
 
             // Add metadata
