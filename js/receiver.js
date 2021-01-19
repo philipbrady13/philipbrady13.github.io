@@ -3,6 +3,9 @@ const playerManager = context.getPlayerManager();
 
 
 const playbackConfig = new cast.framework.PlaybackConfig();
+playbackConfig.manifestRequestHandler = requestInfo => {
+  requestInfo.withCredentials = true;
+};
 // Customize the license url for playback
 // playbackConfig.licenseUrl = 'https://wv-keyos.licensekeyserver.com/';
 // playbackConfig.protectionSystem = cast.framework.ContentProtection.WIDEVINE;
@@ -30,25 +33,29 @@ context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackCon
 function makeRequest (method, url) {
   castDebugLogger.warn('MyAPP.LOG', 'makeRequest function', method, url);
   return new Promise(function (resolve, reject) {
-    var xhr = new XMLHttpRequest();
-    xhr.open(method, url);
-    xhr.onload = function () {
-      if (this.status >= 200 && this.status < 300) {
-        resolve(JSON.parse(xhr.response));
-      } else {
-        reject({
-          status: this.status,
-          statusText: xhr.statusText
-        });
-      }
-    };
-    xhr.onerror = function () {
-      reject({
-        status: this.status,
-        statusText: xhr.statusText
-      });
-    };
-    xhr.send();
+    // var xhr = new XMLHttpRequest();
+    // xhr.open(method, url);
+    // xhr.onload = function () {
+    //   if (this.status >= 200 && this.status < 300) {
+    //     resolve(JSON.parse(xhr.response));
+    //   } else {
+    //     reject({
+    //       status: this.status,
+    //       statusText: xhr.statusText
+    //     });
+    //   }
+    // };
+    // xhr.onerror = function () {
+    //   reject({
+    //     status: this.status,
+    //     statusText: xhr.statusText
+    //   });
+    // };
+    // xhr.send();
+
+    fetch(url, {
+      method,
+    })
   });
 }
 
@@ -84,6 +91,7 @@ playerManager.setMessageInterceptor(
         .then(function (data) {
           // var item = data[request.media.contentId];
           var item = request.media.contentId;
+          console.log('makeRequest :: then :: item', item);
           if(!item) {
             // Content could not be found in repository
             castDebugLogger.error('MyAPP.LOG', 'Content not found');
