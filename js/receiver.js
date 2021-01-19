@@ -33,29 +33,43 @@ context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackCon
 function makeRequest (method, url) {
   console.log('makeRequest()', method, url);
   return new Promise(function (resolve, reject) {
-    // var xhr = new XMLHttpRequest();
-    // xhr.open(method, url);
-    // xhr.onload = function () {
-    //   if (this.status >= 200 && this.status < 300) {
-    //     resolve(JSON.parse(xhr.response));
-    //   } else {
-    //     reject({
-    //       status: this.status,
-    //       statusText: xhr.statusText
-    //     });
-    //   }
-    // };
-    // xhr.onerror = function () {
-    //   reject({
-    //     status: this.status,
-    //     statusText: xhr.statusText
-    //   });
-    // };
-    // xhr.send();
+    var xhr = new XMLHttpRequest();
+    xhr.open(method, url);
+    xhr.onload = function () {
+      console.log('xhr onload', this);
+      if (this.status >= 200 && this.status < 300) {
+        resolve(JSON.parse(xhr.response));
+      } else {
+        reject({
+          status: this.status,
+          statusText: xhr.statusText
+        });
+      }
+    };
+    xhr.onerror = function () {
+      console.log('xhr error', this);
+      reject({
+        status: this.status,
+        statusText: xhr.statusText
+      });
+    };
+    xhr.send();
 
-    fetch(url, {
-      method,
-    })
+    // try {
+    //   const response = await fetch(url, {
+    //     method,
+    //   });
+
+    //   if (response) {
+    //     console.log('fetch response: ', response);
+    //     resolve(response);
+    //   } else {
+    //     reject({});
+    //   }
+    // } catch (err) {
+    //   console.log('fetch catch ', err);
+    //   reject({});
+    // }
   });
 }
 
