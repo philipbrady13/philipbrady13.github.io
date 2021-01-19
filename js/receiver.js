@@ -38,7 +38,9 @@ function makeRequest (method, url) {
     xhr.onload = function () {
       console.log('xhr onload', this);
       if (this.status >= 200 && this.status < 300) {
-        resolve(xhr.response.text());
+        // resolve(xhr.response.text());
+        // resolve(JSON.stringify(xhr.response));
+        resolve(xhr.response);
       } else {
         reject({
           status: this.status,
