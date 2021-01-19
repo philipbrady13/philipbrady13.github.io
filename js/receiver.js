@@ -14,7 +14,7 @@ const playbackConfig = new cast.framework.PlaybackConfig();
 //   };
 // };
 
-playbackConfig.manifestRequestHandler = requestInfo => {
+playbackConfig.manifestRequestHandler = (requestInfo) => {
   requestInfo.withCredentials = true;
   console.log('manifestRequestHandler: ', requestInfo);
 
@@ -26,7 +26,6 @@ playbackConfig.manifestRequestHandler = requestInfo => {
 };
 
 playbackConfig.segmentHandler = segmentInfo => {
-  segmentInfo.withCredentials = true;
   console.log('segmentHandler: ', segmentInfo);
 
   // if (!segmentInfo.url.includes('?')) {
