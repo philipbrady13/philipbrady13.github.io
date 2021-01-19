@@ -31,7 +31,7 @@ context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackCon
 
 
 function makeRequest (method, url) {
-  castDebugLogger.warn('MyAPP.LOG', 'makeRequest function', method, url);
+  console.log('makeRequest()', method, url);
   return new Promise(function (resolve, reject) {
     // var xhr = new XMLHttpRequest();
     // xhr.open(method, url);
@@ -74,11 +74,11 @@ playerManager.setMessageInterceptor(
         'application/x-mpegURL',
         'application/x-mpegurl'
       ].includes(request.media.contentType)) {
-        castDebugLogger.warn('MyAPP.LOG', 'request.media.contentType !== application/x-mpegurl', request.media);
+        console.warn('MyAPP.LOG', 'request.media.contentType !== application/x-mpegurl', request.media);
         return resolve(request);
       }
 
-      castDebugLogger.warn('MyAPP.LOG', 'Making request to get application/x-mpegurl');
+      console.warn('MyAPP.LOG', 'Making request to get application/x-mpegurl');
 
       var mediaUrl = request.media.contentId;
       var appendQueryString = request.media.customData ? request.media.customData.appendQueryString : null;
