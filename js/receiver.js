@@ -1,6 +1,7 @@
 const context = cast.framework.CastReceiverContext.getInstance();
 const playerManager = context.getPlayerManager();
 
+let querySignature = null;
 
 const playbackConfig = new cast.framework.PlaybackConfig();
 // Customize the license url for playback
@@ -16,6 +17,10 @@ const playbackConfig = new cast.framework.PlaybackConfig();
 playbackConfig.manifestRequestHandler = requestInfo => {
   requestInfo.withCredentials = true;
   console.log('manifestRequestHandler: ', requestInfo);
+
+  if (!!querySignature) {
+    requestInfo.url = requestInfo.url + '?' + querySignature;
+  }
 
   return requestInfo
 };
@@ -90,6 +95,8 @@ playerManager.setMessageInterceptor(
       var appendQueryString = request.media.customData ? request.media.customData.appendQueryString : null;
       var signedMediaUrl = !!appendQueryString ? mediaUrl + '?' + appendQueryString : mediaUrl;
 
+      querySignature = appendQueryString
+
       console.log('appendQueryString, signedMediaUrl :: ', appendQueryString, signedMediaUrl);
 
       // Fetch content repository by requested contentId
@@ -110,12 +117,13 @@ playerManager.setMessageInterceptor(
             request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.FMP4;
 
             // Add metadata
-            var metadata = new cast.framework.messages.MovieMediaMetadata();
-            metadata.metadataType = cast.framework.messages.MetadataType.MOVIE;
-            metadata.title = item.title;
-            metadata.subtitle = item.author;
+            // var metadata = new cast.framework.messages.MovieMediaMetadata();
+            // metadata.metadataType = cast.framework.messages.MetadataType.MOVIE;
 
-            request.media.metadata = metadata;
+            // metadata.title = item.title;
+            // metadata.subtitle = item.author;
+
+            // request.media.metadata = metadata;
 
             console.log('final request::', request);
 
