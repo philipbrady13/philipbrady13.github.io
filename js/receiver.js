@@ -60,7 +60,7 @@ function makeRequest (method, url) {
 
     console.log('z: ', response);
 
-    return response;
+    resolve(response.body);
   });
 }
 
