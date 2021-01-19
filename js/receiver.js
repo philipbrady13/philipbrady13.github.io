@@ -55,7 +55,7 @@ function makeRequest (method, url) {
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   request => {
-    castDebugLogger.info('MyAPP.LOG', 'Intercepting LOAD request', request.media);
+    castDebugLogger.info('MyAPP.LOG', 'Intercepting LOAD request', request);
 
     if (request.media && request.media.entity) {
       request.media.contentId = request.media.entity;
@@ -68,8 +68,6 @@ playerManager.setMessageInterceptor(
         castDebugLogger.info('MyAPP.LOG', 'request.media.contentType !== application/x-mpegurl', request.media);
         return resolve(request);
       }
-
-      return resolve(request);
 
       castDebugLogger.info('MyAPP.LOG', 'Making request to get application/x-mpegurl');
 
