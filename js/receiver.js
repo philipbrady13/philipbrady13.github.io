@@ -19,7 +19,7 @@ playbackConfig.manifestRequestHandler = requestInfo => {
   console.log('manifestRequestHandler: ', requestInfo);
 
   if (!!querySignature) {
-    requestInfo.url = requestInfo.url + '?' + querySignature;
+    // requestInfo.url = requestInfo.url + '?' + querySignature;
   }
 
   return requestInfo
