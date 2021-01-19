@@ -76,7 +76,7 @@ function makeRequest (method, url) {
       method,
     });
 
-    console.log('z: ', response);
+    console.log('makeRequest fetch response: ', response);
 
     resolve(response.body);
   });
