@@ -70,11 +70,14 @@ function makeRequest (method, url) {
       const response = await fetch(url, {
         method,
         mode: 'cors',
-      })
+      });
 
-      return response.json()
+      resolve(response.json());
     } catch (err) {
       castDebugLogger.error('xhr.onerror', err);
+      reject({
+        status: 400
+      });
     }
   });
 }
