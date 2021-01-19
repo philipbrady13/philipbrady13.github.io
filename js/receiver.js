@@ -76,9 +76,9 @@ function makeRequest (method, url) {
       method,
     });
 
-    console.log('makeRequest fetch response: ', response.body.text());
+    const text = await response.text()
 
-    resolve(response.body);
+    resolve(text);
   });
 }
 
