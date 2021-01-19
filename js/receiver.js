@@ -15,6 +15,9 @@ const playbackConfig = new cast.framework.PlaybackConfig();
 
 playbackConfig.manifestRequestHandler = requestInfo => {
   requestInfo.withCredentials = true;
+  console.log('manifestRequestHandler: ', requestInfo);
+
+  return requestInfo
 };
 
 
