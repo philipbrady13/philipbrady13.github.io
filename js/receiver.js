@@ -28,6 +28,7 @@ context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackCon
 
 
 function makeRequest (method, url) {
+  castDebugLogger.info('MyAPP.LOG', 'makeRequest function', method, url);
   return new Promise(function (resolve, reject) {
     var xhr = new XMLHttpRequest();
     xhr.open(method, url);
@@ -62,9 +63,15 @@ playerManager.setMessageInterceptor(
 
     return new Promise((resolve, reject) => {
 
-      if(request.media.contentType == 'video/mp4') {
+      // if(request.media.contentType == 'video/mp4') {
+      if(request.media.contentType !== 'application/x-mpegurl') {
+        castDebugLogger.info('MyAPP.LOG', 'request.media.contentType !== application/x-mpegurl', request.media);
         return resolve(request);
       }
+
+      return resolve(request);
+
+      castDebugLogger.info('MyAPP.LOG', 'Making request to get application/x-mpegurl');
 
       // Fetch content repository by requested contentId
       makeRequest('GET', request.media.contentId)
