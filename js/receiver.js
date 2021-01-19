@@ -100,6 +100,9 @@ const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
 // NOTE: make sure it is disabled on production
 castDebugLogger.setEnabled(true);
 
+// Show debug overlay
+castDebugLogger.showDebugLogs(true);
+
 playerManager.addEventListener(
   cast.framework.events.category.CORE,
   event => {
