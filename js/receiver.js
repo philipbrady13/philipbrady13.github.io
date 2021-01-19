@@ -3,9 +3,6 @@ const playerManager = context.getPlayerManager();
 
 
 const playbackConfig = new cast.framework.PlaybackConfig();
-playbackConfig.manifestRequestHandler = requestInfo => {
-  requestInfo.withCredentials = true;
-};
 // Customize the license url for playback
 // playbackConfig.licenseUrl = 'https://wv-keyos.licensekeyserver.com/';
 // playbackConfig.protectionSystem = cast.framework.ContentProtection.WIDEVINE;
@@ -77,8 +74,6 @@ playerManager.setMessageInterceptor(
         console.warn('MyAPP.LOG', 'request.media.contentType !== application/x-mpegurl', request.media);
         return resolve(request);
       }
-
-      console.warn('MyAPP.LOG', 'Making request to get application/x-mpegurl');
 
       var mediaUrl = request.media.contentId;
       var appendQueryString = request.media.customData ? request.media.customData.appendQueryString : null;
