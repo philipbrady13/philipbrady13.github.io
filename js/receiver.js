@@ -91,8 +91,7 @@ playerManager.setMessageInterceptor(
         .then(function (data) {
           console.log('make request ...then ... data: ', data)
           // var item = data[request.media.contentId];
-          var item = request.media.contentId;
-          console.log('makeRequest :: then :: item', item);
+          var item = signedMediaUrl;
           if(!item) {
             // Content could not be found in repository
             castDebugLogger.error('MyAPP.LOG', 'Content not found');
@@ -100,7 +99,7 @@ playerManager.setMessageInterceptor(
           } else {
             // Adjusting request to make requested content playable
             request.media.contentId = signedMediaUrl;
-            // request.media.contentType = 'application/x-mpegurl';
+            request.media.contentType = 'application/x-mpegurl';
             request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.FMP4;
             request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.FMP4;
 
@@ -127,7 +126,7 @@ const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
 castDebugLogger.setEnabled(true);
 
 // Show debug overlay
-castDebugLogger.showDebugLogs(true);
+// castDebugLogger.showDebugLogs(true);
 
 playerManager.addEventListener(
   cast.framework.events.category.CORE,
@@ -200,7 +199,33 @@ playerDataBinder.addEventListener(
 
 // context.start({ touchScreenOptimizedApp: true });
 
-context.start({playbackConfig: playbackConfig});
+context.start({
+  maxInactivity = 36000,
+  playbackConfig: playbackConfig,
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
