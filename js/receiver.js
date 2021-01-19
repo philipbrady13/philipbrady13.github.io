@@ -55,7 +55,7 @@ function makeRequest (method, url) {
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   request => {
-    castDebugLogger.warn('MyAPP.LOG', 'Intercepting LOAD request', request);
+    castDebugLogger.warn('MyAPP.LOG', 'Intercepting LOAD request', request, request.media.contentType, request.media.contentType !== 'application/x-mpegurl');
     console.log('request: ', request);
 
     if (request.media && request.media.entity) {
@@ -64,7 +64,11 @@ playerManager.setMessageInterceptor(
 
     return new Promise((resolve, reject) => {
       // if(request.media.contentType == 'video/mp4') {
-      if(request.media.contentType !== 'application/x-mpegurl') {
+      if (![
+        'application/x-mpegURL',
+        'application/x-mpegurl'
+      ].includes(request.media.contentType)) {
+      // if(request.media.contentType !== 'application/x-mpegURL') {
         castDebugLogger.warn('MyAPP.LOG', 'request.media.contentType !== application/x-mpegurl', request.media);
         return resolve(request);
       }
