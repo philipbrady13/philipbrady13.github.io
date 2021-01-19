@@ -41,11 +41,11 @@ castDebugLogger.loggerLevelByTags = {
 
 function makeRequest (method, url) {
   return new Promise(function (resolve, reject) {
-    // castDebugLogger.warn('makeRequest', method, url);
+    castDebugLogger.warn('makeRequest', method, url);
     let xhr = new XMLHttpRequest();
-    xhr.open(method, url);
+    xhr.open(method, url, false);
     xhr.onload = function () {
-      // castDebugLogger.warn('makeRequest onload', this.status);
+      castDebugLogger.warn('makeRequest onload', this.status);
       if (this.status >= 200 && this.status < 300) {
         resolve(JSON.parse(xhr.response));
       } else {
