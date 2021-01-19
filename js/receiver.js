@@ -28,9 +28,9 @@ playbackConfig.manifestRequestHandler = requestInfo => {
 playbackConfig.segmentHandler = segmentInfo => {
   console.log('segmentHandler: ', segmentInfo);
 
-  if (!segmentInfo.url.includes('?')) {
-    segmentInfo.url = segmentInfo.url + '?' + querySignature
-  }
+  // if (!segmentInfo.url.includes('?')) {
+  //   segmentInfo.url = segmentInfo.url + '?' + querySignature
+  // }
 
   return segmentInfo
 };
