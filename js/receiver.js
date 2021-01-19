@@ -18,11 +18,21 @@ playbackConfig.manifestRequestHandler = requestInfo => {
   requestInfo.withCredentials = true;
   console.log('manifestRequestHandler: ', requestInfo);
 
-  if (!!querySignature) {
-    // requestInfo.url = requestInfo.url + '?' + querySignature;
-  }
-
   return requestInfo
+};
+
+playbackConfig.segmentHandler = segmentInfo => {
+  // requestInfo.withCredentials = true;
+  console.log('segmentHandler: ', segmentInfo);
+
+  return segmentInfo
+};
+
+playbackConfig.segmentRequestHandler = segmentInfo => {
+  // requestInfo.withCredentials = true;
+  console.log('segmentRequestHandler: ', segmentInfo);
+
+  return segmentInfo
 };
 
 
