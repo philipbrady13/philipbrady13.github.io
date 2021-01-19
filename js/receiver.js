@@ -56,6 +56,7 @@ playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   request => {
     castDebugLogger.warn('MyAPP.LOG', 'Intercepting LOAD request', request);
+    console.log('request: ', request);
 
     if (request.media && request.media.entity) {
       request.media.contentId = request.media.entity;
