@@ -95,8 +95,8 @@ playerManager.setMessageInterceptor(
             // Adjusting request to make requested content playable
             request.media.contentId = signedMediaUrl;
             request.media.contentType = 'application/x-mpegurl';
-            request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.FMP4;
-            request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.FMP4;
+            request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
+            request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
 
             castDebugLogger.warn('MyAPP.LOG', 'Playable URL:', request.media.contentId);
 
@@ -198,7 +198,7 @@ playerDataBinder.addEventListener(
 // context.start({ touchScreenOptimizedApp: true });
 
 context.start({
-  maxInactivity = 36000,
+  maxInactivity: 36000,
   playbackConfig: playbackConfig,
 });
 
