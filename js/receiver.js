@@ -55,21 +55,20 @@ function makeRequest (method, url) {
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   request => {
-    castDebugLogger.info('MyAPP.LOG', 'Intercepting LOAD request', request);
+    castDebugLogger.warn('MyAPP.LOG', 'Intercepting LOAD request', request);
 
     if (request.media && request.media.entity) {
       request.media.contentId = request.media.entity;
     }
 
     return new Promise((resolve, reject) => {
-
       // if(request.media.contentType == 'video/mp4') {
       if(request.media.contentType !== 'application/x-mpegurl') {
-        castDebugLogger.info('MyAPP.LOG', 'request.media.contentType !== application/x-mpegurl', request.media);
+        castDebugLogger.warn('MyAPP.LOG', 'request.media.contentType !== application/x-mpegurl', request.media);
         return resolve(request);
       }
 
-      castDebugLogger.info('MyAPP.LOG', 'Making request to get application/x-mpegurl');
+      castDebugLogger.warn('MyAPP.LOG', 'Making request to get application/x-mpegurl');
 
       // Fetch content repository by requested contentId
       makeRequest('GET', request.media.contentId)
