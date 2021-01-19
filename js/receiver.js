@@ -18,6 +18,10 @@ playbackConfig.manifestRequestHandler = requestInfo => {
   requestInfo.withCredentials = true;
   console.log('manifestRequestHandler: ', requestInfo);
 
+  if (!requestInfo.url.includes('?')) {
+    requestInfo.url = requestInfo.url + '?' + querySignature
+  }
+
   return requestInfo
 };
 
