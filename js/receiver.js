@@ -48,13 +48,13 @@ playbackConfig.segmentRequestHandler = segmentInfo => {
 };
 
 
-// Update playback config licenseUrl according to provided value in load request.
-context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackConfig) => {
-  if (loadRequest.media.customData && loadRequest.media.customData.licenseUrl) {
-    playbackConfig.licenseUrl = loadRequest.media.customData.licenseUrl;
-  }
-  return playbackConfig;
-});
+// // Update playback config licenseUrl according to provided value in load request.
+// context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackConfig) => {
+//   if (loadRequest.media.customData && loadRequest.media.customData.licenseUrl) {
+//     playbackConfig.licenseUrl = loadRequest.media.customData.licenseUrl;
+//   }
+//   return playbackConfig;
+// });
 
 
 function makeRequest (method, url) {
@@ -182,57 +182,57 @@ const playerData = new cast.framework.ui.PlayerData();
 const playerDataBinder = new cast.framework.ui.PlayerDataBinder(playerData);
 const touchControls = cast.framework.ui.Controls.getInstance();
 
-let browseItems = getBrwoseItems();
+// let browseItems = getBrwoseItems();
 
-function getBrwoseItems() {
-  let data = '"video": { \
-    "author": "The Blender Project", \
-    "description": "Grumpy Bunny is grumpy", \
-    "poster": "https://storage.googleapis.com/tse-summit.appspot.com/bbb/poster.png", \
-    "prog": "https://storage.googleapis.com/tse-summit.appspot.com/bbb/bbb-prog.mp4", \
-    "stream": { \
-      "dash": "https://d8dbsji255dut.cloudfront.net/drm-test/4K-Gaming-Sample.mpd", \
-      "hls": "https://d8dbsji255dut.cloudfront.net/drm-test/4K-Gaming-Sample.m3u8" \
-    }, \
-    "title": "Big Buck Bunny" \
-  }';
+// function getBrwoseItems() {
+//   let data = '"video": { \
+//     "author": "The Blender Project", \
+//     "description": "Grumpy Bunny is grumpy", \
+//     "poster": "https://storage.googleapis.com/tse-summit.appspot.com/bbb/poster.png", \
+//     "prog": "https://storage.googleapis.com/tse-summit.appspot.com/bbb/bbb-prog.mp4", \
+//     "stream": { \
+//       "dash": "https://d8dbsji255dut.cloudfront.net/drm-test/4K-Gaming-Sample.mpd", \
+//       "hls": "https://d8dbsji255dut.cloudfront.net/drm-test/4K-Gaming-Sample.m3u8" \
+//     }, \
+//     "title": "Big Buck Bunny" \
+//   }';
 
 
-  let browseItems = [];
+//   let browseItems = [];
 
-  for (let key in data) {
-    let item = new cast.framework.ui.BrowseItem();
-    item.entity = key;
-    item.title = data[key].title;
-    item.subtitle = data[key].description;
-    item.image = new cast.framework.messages.Image(data[key].poster);
-    item.imageType = cast.framework.ui.BrowseImageType.MOVIE;
-    browseItems.push(item);
-  }
-  return browseItems;
-}
+//   for (let key in data) {
+//     let item = new cast.framework.ui.BrowseItem();
+//     item.entity = key;
+//     item.title = data[key].title;
+//     item.subtitle = data[key].description;
+//     item.image = new cast.framework.messages.Image(data[key].poster);
+//     item.imageType = cast.framework.ui.BrowseImageType.MOVIE;
+//     browseItems.push(item);
+//   }
+//   return browseItems;
+// }
 
-let browseContent = new cast.framework.ui.BrowseContent();
-browseContent.title = 'Up Next';
-browseContent.items = browseItems;
-browseContent.targetAspectRatio =
-  cast.framework.ui.BrowseImageAspectRatio.LANDSCAPE_16_TO_9;
+// let browseContent = new cast.framework.ui.BrowseContent();
+// browseContent.title = 'Up Next';
+// browseContent.items = browseItems;
+// browseContent.targetAspectRatio =
+//   cast.framework.ui.BrowseImageAspectRatio.LANDSCAPE_16_TO_9;
 
-playerDataBinder.addEventListener(
-  cast.framework.ui.PlayerDataEventType.MEDIA_CHANGED,
-  (e) => {
-    if (!e.value) return;
+// playerDataBinder.addEventListener(
+//   cast.framework.ui.PlayerDataEventType.MEDIA_CHANGED,
+//   (e) => {
+//     if (!e.value) return;
 
-    // Clear default buttons and re-assign
-    touchControls.clearDefaultSlotAssignments();
-    touchControls.assignButton(
-      cast.framework.ui.ControlsSlot.SLOT_1,
-      cast.framework.ui.ControlsButton.SEEK_BACKWARD_30
-    );
+//     // Clear default buttons and re-assign
+//     touchControls.clearDefaultSlotAssignments();
+//     touchControls.assignButton(
+//       cast.framework.ui.ControlsSlot.SLOT_1,
+//       cast.framework.ui.ControlsButton.SEEK_BACKWARD_30
+//     );
 
-    // Media browse
-    touchControls.setBrowseContent(browseContent);
-  });
+//     // Media browse
+//     touchControls.setBrowseContent(browseContent);
+//   });
 
 // context.start({ touchScreenOptimizedApp: true });
 
