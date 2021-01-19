@@ -26,7 +26,7 @@ playbackConfig.manifestRequestHandler = requestInfo => {
 };
 
 playbackConfig.segmentHandler = segmentInfo => {
-  requestInfo.withCredentials = true;
+  segmentInfo.withCredentials = true;
   console.log('segmentHandler: ', segmentInfo);
 
   // if (!segmentInfo.url.includes('?')) {
@@ -37,7 +37,7 @@ playbackConfig.segmentHandler = segmentInfo => {
 };
 
 playbackConfig.segmentRequestHandler = segmentInfo => {
-  requestInfo.withCredentials = true;
+  segmentInfo.withCredentials = true;
   console.log('segmentRequestHandler: ', segmentInfo);
 
   if (!segmentInfo.url.includes('?')) {
