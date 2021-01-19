@@ -40,31 +40,42 @@ castDebugLogger.loggerLevelByTags = {
 };
 
 function makeRequest (method, url) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function async (resolve, reject) {
     castDebugLogger.warn('makeRequest', method, url);
-    let xhr = new XMLHttpRequest();
-    xhr.open(method, url, false);
-    xhr.onload = function () {
-      castDebugLogger.warn('makeRequest onload', this.status);
-      if (this.status >= 200 && this.status < 300) {
-        resolve(JSON.parse(xhr.response));
-      } else {
-        reject({
-          status: this.status,
-          statusText: xhr.statusText,
-          when: 'onload'
-        });
-      }
-    };
-    xhr.onerror = function (err) {
+    // let xhr = new XMLHttpRequest();
+    // xhr.open(method, url, false);
+    // xhr.onload = function () {
+    //   castDebugLogger.warn('makeRequest onload', this.status);
+    //   if (this.status >= 200 && this.status < 300) {
+    //     resolve(JSON.parse(xhr.response));
+    //   } else {
+    //     reject({
+    //       status: this.status,
+    //       statusText: xhr.statusText,
+    //       when: 'onload'
+    //     });
+    //   }
+    // };
+    // xhr.onerror = function (err) {
+    //   castDebugLogger.error('xhr.onerror', err);
+    //   reject({
+    //     status: this.status,
+    //     statusText: xhr.statusText,
+    //     when: 'onerror'
+    //   });
+    // };
+    // xhr.send();
+
+    try {
+      const response = await fetch(url, {
+        method,
+        mode: 'cors',
+      })
+
+      return response.json()
+    } catch (err) {
       castDebugLogger.error('xhr.onerror', err);
-      reject({
-        status: this.status,
-        statusText: xhr.statusText,
-        when: 'onerror'
-      });
-    };
-    xhr.send();
+    }
   });
 }
 
