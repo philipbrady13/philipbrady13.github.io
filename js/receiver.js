@@ -29,30 +29,38 @@ context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackCon
 
 function makeRequest (method, url) {
   console.log('makeRequest()', method, url);
-  return new Promise(function (resolve, reject) {
-    var xhr = new XMLHttpRequest();
-    xhr.open(method, url);
-    xhr.onload = function () {
-      console.log('xhr onload', this);
-      if (this.status >= 200 && this.status < 300) {
-        // resolve(xhr.response.text());
-        // resolve(JSON.stringify(xhr.response));
-        resolve(xhr.response);
-      } else {
-        reject({
-          status: this.status,
-          statusText: xhr.statusText
-        });
-      }
-    };
-    xhr.onerror = function () {
-      console.log('xhr error', this);
-      reject({
-        status: this.status,
-        statusText: xhr.statusText
-      });
-    };
-    xhr.send();
+  return new Promise(async function (resolve, reject) {
+    // var xhr = new XMLHttpRequest();
+    // xhr.open(method, url);
+    // xhr.onload = function () {
+    //   console.log('xhr onload', this);
+    //   if (this.status >= 200 && this.status < 300) {
+    //     // resolve(xhr.response.text());
+    //     // resolve(JSON.stringify(xhr.response));
+    //     resolve(xhr.response);
+    //   } else {
+    //     reject({
+    //       status: this.status,
+    //       statusText: xhr.statusText
+    //     });
+    //   }
+    // };
+    // xhr.onerror = function () {
+    //   console.log('xhr error', this);
+    //   reject({
+    //     status: this.status,
+    //     statusText: xhr.statusText
+    //   });
+    // };
+    // xhr.send();
+
+    const response = await fetch(url, {
+      method,
+    });
+
+    console.log('z: ', response);
+
+    return response;
   });
 }
 
@@ -93,12 +101,10 @@ playerManager.setMessageInterceptor(
             reject();
           } else {
             // Adjusting request to make requested content playable
-            request.media.contentId = data;
+            request.media.contentId = signedMediaUrl;
             request.media.contentType = 'application/x-mpegurl';
             request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
             request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.FMP4;
-
-            castDebugLogger.warn('MyAPP.LOG', 'Playable URL:', request.media.contentId);
 
             // Add metadata
             var metadata = new cast.framework.messages.MovieMediaMetadata();
