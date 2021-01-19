@@ -89,6 +89,7 @@ playerManager.setMessageInterceptor(
       // Fetch content repository by requested contentId
       makeRequest('GET', signedMediaUrl)
         .then(function (data) {
+          console.log('make request ...then ... data: ', data)
           // var item = data[request.media.contentId];
           var item = request.media.contentId;
           console.log('makeRequest :: then :: item', item);
