@@ -45,7 +45,7 @@ function makeRequest (method, url) {
     let xhr = new XMLHttpRequest();
     xhr.open(method, url);
     xhr.onload = function () {
-      castDebugLogger.warn('makeRequest onload', this.status);
+      // castDebugLogger.warn('makeRequest onload', this.status);
       if (this.status >= 200 && this.status < 300) {
         resolve(JSON.parse(xhr.response));
       } else {
@@ -71,7 +71,7 @@ function makeRequest (method, url) {
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   request => {
-    castDebugLogger.info(LOG_TAG, 'Intercepting LOAD request');
+    castDebugLogger.info(LOG_TAG, 'Intercepting LOAD request', request);
 
     // Map contentId to entity
     if (request.media && request.media.entity) {
