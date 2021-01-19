@@ -26,15 +26,21 @@ playbackConfig.manifestRequestHandler = requestInfo => {
 };
 
 playbackConfig.segmentHandler = segmentInfo => {
-  // requestInfo.withCredentials = true;
   console.log('segmentHandler: ', segmentInfo);
+
+  if (!segmentInfo.url.includes('?')) {
+    segmentInfo.url = segmentInfo.url + '?' + querySignature
+  }
 
   return segmentInfo
 };
 
 playbackConfig.segmentRequestHandler = segmentInfo => {
-  // requestInfo.withCredentials = true;
   console.log('segmentRequestHandler: ', segmentInfo);
+
+  if (!segmentInfo.url.includes('?')) {
+    segmentInfo.url = segmentInfo.url + '?' + querySignature
+  }
 
   return segmentInfo
 };
