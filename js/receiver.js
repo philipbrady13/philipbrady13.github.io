@@ -85,8 +85,8 @@ playerManager.setMessageInterceptor(
       makeRequest('GET', signedMediaUrl)
         .then(function (data) {
           console.log('make request ...then ... data: ', data)
-          // var item = data[request.media.contentId];
           var item = signedMediaUrl;
+
           if(!item) {
             // Content could not be found in repository
             castDebugLogger.error('MyAPP.LOG', 'Content not found');
@@ -107,6 +107,9 @@ playerManager.setMessageInterceptor(
             metadata.subtitle = item.author;
 
             request.media.metadata = metadata;
+
+            console.log('final request::', request);
+
             resolve(request);
           }
       });
