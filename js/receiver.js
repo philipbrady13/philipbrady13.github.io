@@ -93,10 +93,10 @@ playerManager.setMessageInterceptor(
             reject();
           } else {
             // Adjusting request to make requested content playable
-            request.media.contentId = signedMediaUrl;
+            request.media.contentId = data;
             request.media.contentType = 'application/x-mpegurl';
             request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
-            request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
+            request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.FMP4;
 
             castDebugLogger.warn('MyAPP.LOG', 'Playable URL:', request.media.contentId);
 
