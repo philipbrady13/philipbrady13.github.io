@@ -38,7 +38,7 @@ function makeRequest (method, url) {
     xhr.onload = function () {
       console.log('xhr onload', this);
       if (this.status >= 200 && this.status < 300) {
-        resolve(JSON.parse(xhr.response));
+        resolve(xhr.response.text());
       } else {
         reject({
           status: this.status,
@@ -54,22 +54,6 @@ function makeRequest (method, url) {
       });
     };
     xhr.send();
-
-    // try {
-    //   const response = await fetch(url, {
-    //     method,
-    //   });
-
-    //   if (response) {
-    //     console.log('fetch response: ', response);
-    //     resolve(response);
-    //   } else {
-    //     reject({});
-    //   }
-    // } catch (err) {
-    //   console.log('fetch catch ', err);
-    //   reject({});
-    // }
   });
 }
 
@@ -113,8 +97,11 @@ playerManager.setMessageInterceptor(
             reject();
           } else {
             // Adjusting request to make requested content playable
-            request.media.contentId = item.stream.hls;
+            request.media.contentId = signedMediaUrl;
             // request.media.contentType = 'application/x-mpegurl';
+            request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.FMP4;
+            request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.FMP4;
+
             castDebugLogger.warn('MyAPP.LOG', 'Playable URL:', request.media.contentId);
 
             // Add metadata
