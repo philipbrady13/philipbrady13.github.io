@@ -28,7 +28,7 @@ context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackCon
 
 
 function makeRequest (method, url) {
-  castDebugLogger.info('MyAPP.LOG', 'makeRequest function', method, url);
+  castDebugLogger.warn('MyAPP.LOG', 'makeRequest function', method, url);
   return new Promise(function (resolve, reject) {
     var xhr = new XMLHttpRequest();
     xhr.open(method, url);
@@ -55,8 +55,7 @@ function makeRequest (method, url) {
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   request => {
-    castDebugLogger.warn('MyAPP.LOG', 'Intercepting LOAD request', request, request.media.contentType, request.media.contentType !== 'application/x-mpegurl');
-    console.log('request: ', request);
+    console.log('intercepting request: ', request);
 
     if (request.media && request.media.entity) {
       request.media.contentId = request.media.entity;
@@ -68,15 +67,20 @@ playerManager.setMessageInterceptor(
         'application/x-mpegURL',
         'application/x-mpegurl'
       ].includes(request.media.contentType)) {
-      // if(request.media.contentType !== 'application/x-mpegURL') {
         castDebugLogger.warn('MyAPP.LOG', 'request.media.contentType !== application/x-mpegurl', request.media);
         return resolve(request);
       }
 
       castDebugLogger.warn('MyAPP.LOG', 'Making request to get application/x-mpegurl');
 
+      var mediaUrl = request.media.contentId;
+      var appendQueryString = request.media.customData ? request.media.customData.appendQueryString : null;
+      var signedMediaUrl = !!appendQueryString ? mediaUrl + '?' + appendQueryString : mediaUrl;
+
+      console.log('appendQueryString, signedMediaUrl :: ', appendQueryString, signedMediaUrl);
+
       // Fetch content repository by requested contentId
-      makeRequest('GET', request.media.contentId)
+      makeRequest('GET', signedMediaUrl)
         .then(function (data) {
           // var item = data[request.media.contentId];
           var item = request.media.contentId;
