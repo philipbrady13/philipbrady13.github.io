@@ -1,3 +1,7 @@
+body {
+  --playback-logo-image: url('../img/logo.png');
+}
+
 .logo-container {
   display: block;
   text-align: center;
