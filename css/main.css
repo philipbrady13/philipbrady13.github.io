@@ -20,5 +20,9 @@ cast-media-player {
   --theme-hue: 100;
   --progress-color: rgb(0, 255, 0);
   --splash-image: url('./../img/logo.png');
-  --splash-size: cover;
+  --splash-size: contain;
+  --splash-position: center;
+  --logo-image: url('./../img/logo.png');
+  --logo-size: contain;
+  --logo-position: center;
 }
