@@ -21,10 +21,10 @@ cast-media-player {
   --progress-color: rgb(0, 255, 0);
   --splash-image: url('./../img/logo.png');
   /* --splash-size: contain; */
-  --splash-size: 500px;
+  --splash-size: 200px;
   --splash-position: center;
   --logo-image: url('./../img/logo.png');
   /* --logo-size: contain; */
-  --logo-size: 500px;
+  --logo-size: 200px;
   --logo-position: center;
 }
