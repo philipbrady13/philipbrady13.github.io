@@ -1,5 +1,5 @@
 body {
-  --playback-logo-image: url('../img/logo.png');
+  --playback-logo-image: url('./../img/logo.png');
 }
 
 .logo-container {
@@ -11,4 +11,14 @@ body {
 .logo-container img {
   display: block;
   margin: 0 auto;
+}
+
+body {
+  --playback-logo-image: url('./../img/logo.png');
+}
+cast-media-player {
+  --theme-hue: 100;
+  --progress-color: rgb(0, 255, 0);
+  --splash-image: url('./../img/logo.png');
+  --splash-size: cover;
 }
