@@ -101,6 +101,7 @@ playerManager.setMessageInterceptor(
 
 /** Debug Logger **/
 const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
+console.log('castDebugLogger', castDebugLogger);
 
 // Enable debug logger and show a warning on receiver
 // NOTE: make sure it is disabled on production
