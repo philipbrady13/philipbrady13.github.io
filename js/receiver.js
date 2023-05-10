@@ -6,60 +6,60 @@ let customData = null
 const playbackConfig = new cast.framework.PlaybackConfig()
 
 function transformRequestInfo(requestInfo) {
-  console.log('transformRequestInfo', requestInfo)
+  console.log('transformRequestInfo', requestInfo);
   if (!requestInfo.url.includes('Policy=')) {
-    requestInfo.url = signUrl(requestInfo.url)
+    requestInfo.url = signUrl(requestInfo.url);
   }
 
-  return requestInfo
+  return requestInfo;
 }
 
 function signUrl(url) {
-  var appendQueryString = customData ? customData.appendQueryString : null
-  var playback = customData ? customData.playback : null
+  var appendQueryString = customData ? customData.appendQueryString : null;
+  var playback = customData ? customData.playback : null;
 
   if (appendQueryString) {
-    return appendQs(url, appendQueryString)
+    return appendQs(url, appendQueryString);
   }
   else if (playback) {
-    return signUrlUsingPlayback(url, playback)
+    return signUrlUsingPlayback(url, playback);
   }
 
-  return url
+  return url;
 }
 
 function signUrlUsingPlayback(url, playback) {
   if (!playback) {
-    return url
+    return url;
   }
 
-  const currentItem = getCurrentPlaybackItem(playback, url)
+  const currentItem = getCurrentPlaybackItem(playback, url);
   if (!currentItem?.cloudfrontSignedCookie) {
-    return url
+    return url;
   }
 
-  const qs = cloudfrontSignedCookieToQueryString(currentItem.cloudfrontSignedCookie)
+  const qs = cloudfrontSignedCookieToQueryString(currentItem.cloudfrontSignedCookie);
 
-  return appendQs(url, qs)
+  return appendQs(url, qs);
 }
 
 function getCurrentPlaybackItem(playback, url) {
-  return playback.items.find(item => item.baseUrl && url.startsWith(item.baseUrl))
+  return playback.items.find(item => item.baseUrl && url.startsWith(item.baseUrl));
 }
 
 function cloudfrontSignedCookieToQueryString(cookie) {
   return `${cookie.policy ? `Policy=${encodeURIComponent(cookie.policy)}&` : ''}` +
     `Signature=${encodeURIComponent(cookie.signature)}&` +
     `${cookie.expires ? `Expires=${encodeURIComponent(cookie.expires)}&` : ''}` +
-    `Key-Pair-Id=${encodeURIComponent(cookie.keyPairId)}`
+    `Key-Pair-Id=${encodeURIComponent(cookie.keyPairId)}`;
 }
 
 function appendQs(url, qs) {
   if (!qs) {
-    return url
+    return url;
   }
 
-  return url + (url.includes('?') ? '&' : '?') + qs
+  return url + (url.includes('?') ? '&' : '?') + qs;
 }
 
 playbackConfig.manifestRequestHandler = (requestInfo) => {
@@ -101,7 +101,7 @@ playerManager.setMessageInterceptor(
 
 /** Debug Logger **/
 const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
-console.log('castDebugLogger', castDebugLogger)
+console.log('castDebugLogger', castDebugLogger);
 
 // Enable debug logger and show a warning on receiver
 // NOTE: make sure it is disabled on production
