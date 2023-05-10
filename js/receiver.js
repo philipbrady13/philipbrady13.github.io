@@ -6,6 +6,7 @@ let customData = null
 const playbackConfig = new cast.framework.PlaybackConfig()
 
 function transformRequestInfo(requestInfo) {
+  console.log('transformRequestInfo', requestInfo)
   if (!requestInfo.url.includes('Policy=')) {
     requestInfo.url = signUrl(requestInfo.url)
   }
