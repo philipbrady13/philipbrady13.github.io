@@ -1,111 +1,102 @@
-const context = cast.framework.CastReceiverContext.getInstance();
-const playerManager = context.getPlayerManager();
+const context = cast.framework.CastReceiverContext.getInstance()
+const playerManager = context.getPlayerManager()
 
-let querySignature = null;
+let customData = null
 
-const playbackConfig = new cast.framework.PlaybackConfig();
+const playbackConfig = new cast.framework.PlaybackConfig()
 
-playbackConfig.manifestRequestHandler = (requestInfo) => {
-  requestInfo.withCredentials = true;
-  console.log('manifestRequestHandler: ', requestInfo);
-
-  if (!requestInfo.url.includes('?')) {
-    requestInfo.url = requestInfo.url + '?' + querySignature
+function transformRequestInfo(requestInfo) {
+  if (!requestInfo.url.includes('Policy=')) {
+    requestInfo.url = signUrl(requestInfo.url)
   }
 
   return requestInfo
+}
+
+function signUrl(url) {
+  var appendQueryString = customData ? customData.appendQueryString : null
+  var playback = customData ? customData.playback : null
+
+  if (appendQueryString) {
+    return appendQs(url, appendQueryString)
+  }
+  else if (playback) {
+    return signUrlUsingPlayback(url, playback)
+  }
+
+  return url
+}
+
+function signUrlUsingPlayback(url, playback) {
+  if (!playback) {
+    return url
+  }
+
+  const currentItem = getCurrentPlaybackItem(playback, url)
+  if (!currentItem?.cloudfrontSignedCookie) {
+    return url
+  }
+
+  const qs = cloudfrontSignedCookieToQueryString(currentItem.cloudfrontSignedCookie)
+
+  return appendQs(url, qs)
+}
+
+function getCurrentPlaybackItem(playback, url) {
+  return playback.items.find(item => item.baseUrl && url.startsWith(item.baseUrl))
+}
+
+function cloudfrontSignedCookieToQueryString(cookie) {
+  return `${cookie.policy ? `Policy=${encodeURIComponent(cookie.policy)}&` : ''}` +
+    `Signature=${encodeURIComponent(cookie.signature)}&` +
+    `${cookie.expires ? `Expires=${encodeURIComponent(cookie.expires)}&` : ''}` +
+    `Key-Pair-Id=${encodeURIComponent(cookie.keyPairId)}`
+}
+
+function appendQs(url, qs) {
+  if (!qs) {
+    return url
+  }
+
+  return url + (url.includes('?') ? '&' : '?') + qs
+}
+
+playbackConfig.manifestRequestHandler = (requestInfo) => {
+  return transformRequestInfo(requestInfo)
 };
 
 playbackConfig.segmentHandler = segmentInfo => {
-  console.log('segmentHandler: ', segmentInfo);
-
   return segmentInfo
 };
 
-playbackConfig.segmentRequestHandler = segmentInfo => {
-  segmentInfo.withCredentials = true;
-  console.log('segmentRequestHandler: ', segmentInfo);
-
-  if (!segmentInfo.url.includes('?')) {
-    segmentInfo.url = segmentInfo.url + '?' + querySignature
-  }
-
-  return segmentInfo
+playbackConfig.segmentRequestHandler = requestInfo => {
+  return transformRequestInfo(requestInfo)
 };
-
-
-function makeRequest (method, url) {
-  return new Promise(async function (resolve, reject) {
-    const response = await fetch(url, {
-      method,
-    });
-
-    const text = await response.text()
-
-    resolve(text);
-  });
-}
 
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
-  request => {
-    console.log('intercepting request: ', request);
+  async request => {
+    castDebugLogger.info('MyAPP.LOG', 'intercepting request: ', request);
 
-    if (request.media && request.media.entity) {
-      request.media.contentId = request.media.entity;
+    if (request.media) {
+      customData = request.media.customData
     }
 
-    return new Promise((resolve, reject) => {
-      // if(request.media.contentType == 'video/mp4') {
-      if (![
-        'application/x-mpegURL',
-        'application/x-mpegurl'
-      ].includes(request.media.contentType)) {
-        console.warn('MyAPP.LOG', 'request.media.contentType !== application/x-mpegurl', request.media);
-        return resolve(request);
-      }
+    // if(request.media.contentType == 'video/mp4') {
+    if (![
+      'application/x-mpegURL',
+      'application/x-mpegurl'
+    ].includes(request.media.contentType)) {
+      castDebugLogger.warn('MyAPP.LOG', 'request.media.contentType !== application/x-mpegurl', request.media);
+    }
+    else {
+      request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.FMP4;
+      request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.FMP4;
+    }
 
-      var mediaUrl = request.media.contentId;
-      var appendQueryString = request.media.customData ? request.media.customData.appendQueryString : null;
-      var signedMediaUrl = !!appendQueryString ? mediaUrl + '?' + appendQueryString : mediaUrl;
-
-      querySignature = appendQueryString
-
-      console.log('appendQueryString, signedMediaUrl :: ', appendQueryString, signedMediaUrl);
-
-      // Fetch content repository by requested contentId
-      makeRequest('GET', signedMediaUrl)
-        .then(function (data) {
-          console.log('make request ...then ... data: ', data)
-          var item = signedMediaUrl;
-
-          if(!item) {
-            // Content could not be found in repository
-            castDebugLogger.error('MyAPP.LOG', 'Content not found');
-            reject();
-          } else {
-            // Adjusting request to make requested content playable
-            request.media.contentId = signedMediaUrl;
-            request.media.contentType = 'application/x-mpegurl';
-            request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.FMP4;
-            request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.FMP4;
-
-            // Add metadata
-            // var metadata = new cast.framework.messages.MovieMediaMetadata();
-            // metadata.metadataType = cast.framework.messages.MetadataType.MOVIE;
-
-            // metadata.title = item.title;
-            // metadata.subtitle = item.author;
-
-            // request.media.metadata = metadata;
-
-            console.log('final request::', request);
-
-            resolve(request);
-          }
-      });
-    });
-  });
+    return request
+  }
+);
 
 /** Debug Logger **/
 const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
