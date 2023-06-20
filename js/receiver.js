@@ -101,12 +101,25 @@ playerManager.setMessageInterceptor(
 /** Debug Logger **/
 const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
 
+
+// NEW
+const LOG_TAG = 'MyAPP.LOG';
+
+// Enable debug logger and show a 'DEBUG MODE' overlay at top left corner.
+context.addEventListener(cast.framework.system.EventType.READY, () => {
+  if (!castDebugLogger.debugOverlayElement_) {
+      castDebugLogger.setEnabled(true);
+  }
+});
+// DONE
+
+
 // Enable debug logger and show a warning on receiver
 // NOTE: make sure it is disabled on production
-castDebugLogger.setEnabled(true);
+// castDebugLogger.setEnabled(true);
 
-// Show debug overlay
-castDebugLogger.showDebugLogs(true);
+// // Show debug overlay
+// castDebugLogger.showDebugLogs(true);
 
 playerManager.addEventListener(
   cast.framework.events.category.CORE,
@@ -116,8 +129,12 @@ playerManager.addEventListener(
 
 // Set verbosity level for custom tags
 castDebugLogger.loggerLevelByTags = {
-  'MyAPP.LOG': cast.framework.LoggerLevel.WARNING,
-  'ANALYTICS': cast.framework.LoggerLevel.INFO,
+  // 'MyAPP.LOG': cast.framework.LoggerLevel.WARNING,
+  // 'ANALYTICS': cast.framework.LoggerLevel.INFO,
+  'cast.framework.events.category.CORE': cast.framework.LoggerLevel.INFO,
+  'cast.framework.events.EventType.MEDIA_STATUS': cast.framework.LoggerLevel.DEBUG,
+
+
 };
 
 /** Optimizing for smart displays **/
