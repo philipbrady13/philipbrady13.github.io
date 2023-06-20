@@ -1,3 +1,4 @@
+console.log('TEST ===')
 const context = cast.framework.CastReceiverContext.getInstance()
 const playerManager = context.getPlayerManager()
 
